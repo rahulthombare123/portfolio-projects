@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrackFlow — Habit Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">●</span>
+        <span class="brand-name">TrackFlow</span>
+      </div>
+      <div class="header-right">
+        <span class="date-display" id="currentDate"></span>
+        <button class="btn-add" id="openModal" aria-label="Add new habit">+ Add Habit</button>
+      </div>
+    </div>
+    <!-- Streak bar -->
+    <div class="streak-bar">
+      <div class="streak-item">
+        <span class="streak-num" id="totalHabits">0</span>
+        <span class="streak-label">Habits</span>
+      </div>
+      <div class="streak-divider"></div>
+      <div class="streak-item">
+        <span class="streak-num" id="completedToday">0</span>
+        <span class="streak-label">Done Today</span>
+      </div>
+      <div class="streak-divider"></div>
+      <div class="streak-item">
+        <span class="streak-num" id="longestStreak">0</span>
+        <span class="streak-label">Best Streak</span>
+      </div>
+      <div class="streak-divider"></div>
+      <div class="streak-item">
+        <span class="streak-num" id="overallRate">0%</span>
+        <span class="streak-label">Completion</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- Progress arc section -->
+    <section class="progress-section">
+      <div class="arc-container">
+        <svg class="arc-svg" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- Track -->
+          <path class="arc-track" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke-width="14" stroke-linecap="round"/>
+          <!-- Fill -->
+          <path class="arc-fill" id="arcFill" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke-width="14" stroke-linecap="round"/>
+        </svg>
+        <div class="arc-label">
+          <span class="arc-percent" id="arcPercent">0%</span>
+          <span class="arc-sub">today</span>
+        </div>
+      </div>
+
+      <!-- Weekly heatmap -->
+      <div class="week-section">
+        <h2 class="section-title">This Week</h2>
+        <div class="week-grid" id="weekGrid">
+          <!-- JS fills this -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter tabs -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="pending">Pending</button>
+      <button class="filter-btn" data-filter="done">Completed</button>
+    </div>
+
+    <!-- Habits list -->
+    <section class="habits-section">
+      <div class="habits-list" id="habitsList">
+        <!-- Habits rendered by JS -->
+      </div>
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">◎</div>
+        <p class="empty-title">No habits yet</p>
+        <p class="empty-sub">Start by adding your first habit above.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ADD HABIT MODAL -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">New Habit</h2>
+        <button class="modal-close" id="closeModal" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label" for="habitName">Habit name</label>
+        <input class="field-input" id="habitName" type="text" placeholder="e.g. Morning run, Read 20 pages…" maxlength="60" />
+
+        <label class="field-label" for="habitGoal">Daily goal (optional)</label>
+        <input class="field-input" id="habitGoal" type="text" placeholder="e.g. 30 minutes, 2 litres…" maxlength="40" />
+
+        <label class="field-label">Category</label>
+        <div class="category-grid" id="categoryGrid">
+          <button class="cat-btn active" data-cat="health">🏃 Health</button>
+          <button class="cat-btn" data-cat="mind">🧠 Mind</button>
+          <button class="cat-btn" data-cat="creativity">🎨 Creativity</button>
+          <button class="cat-btn" data-cat="social">🤝 Social</button>
+          <button class="cat-btn" data-cat="finance">💰 Finance</button>
+          <button class="cat-btn" data-cat="custom">⚡ Custom</button>
+        </div>
+
+        <label class="field-label">Accent colour</label>
+        <div class="color-grid" id="colorGrid">
+          <button class="color-btn active" data-color="#6EE7B7" style="--c:#6EE7B7"></button>
+          <button class="color-btn" data-color="#93C5FD" style="--c:#93C5FD"></button>
+          <button class="color-btn" data-color="#FCA5A5" style="--c:#FCA5A5"></button>
+          <button class="color-btn" data-color="#FCD34D" style="--c:#FCD34D"></button>
+          <button class="color-btn" data-color="#C4B5FD" style="--c:#C4B5FD"></button>
+          <button class="color-btn" data-color="#F9A8D4" style="--c:#F9A8D4"></button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelModal">Cancel</button>
+        <button class="btn-save" id="saveHabit">Save Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="modal-overlay" id="deleteOverlay">
+    <div class="modal modal--sm">
+      <div class="modal-header">
+        <h2 class="modal-title">Delete habit?</h2>
+      </div>
+      <div class="modal-body">
+        <p class="delete-msg">This will remove <strong id="deleteHabitName"></strong> and all its history.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelDelete">Keep it</button>
+        <button class="btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
