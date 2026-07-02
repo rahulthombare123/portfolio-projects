@@ -2,8 +2,8 @@
 
 A **responsive, dark-theme habit tracker** built with pure HTML, CSS & JavaScript.  
 No frameworks. No build tools. Just open `index.html` and go.
-
----
+ 
+----
 
 ## ✨ Features
 
