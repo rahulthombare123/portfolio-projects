@@ -1,0 +1,385 @@
+/* ===================================================================
+   IronLog — style.css
+   Theme: gym logbook / index card on a clipboard.
+   Fonts: Anton (display, stamped numbers) + Work Sans (body) + IBM Plex Mono (data)
+   =================================================================== */
+
+:root {
+  /* --- colors (named tokens, not generic defaults) --- */
+  --chalk-bg:       #E7E2D8;   /* board background, chalk-dust beige */
+  --paper:          #FAF7F1;   /* index card paper */
+  --ink:            #24241F;   /* near-black ink, warmer than pure black */
+  --ink-soft:       #5B584E;   /* secondary text on paper */
+  --plate-red:      #B5372A;   /* barbell-plate red, primary accent */
+  --plate-red-dark: #8C2A20;
+  --tape-blue:      #2E5A88;   /* gym-tape blue, secondary accent */
+  --medal-gold:     #C79A3D;   /* PR / highlight gold */
+  --line:           #D8D1C2;   /* hairline borders on paper */
+  --hole:           #CFC8B8;   /* punch-hole color */
+
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 3px;
+  --shadow-card: 0 2px 0 rgba(36,36,31,0.06), 0 10px 24px -14px rgba(36,36,31,0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--chalk-bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(36,36,31,0.06) 1px, transparent 0);
+  background-size: 14px 14px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================== NAVBAR =====================
+   Height decided by content + breathing room, not a fixed magic number:
+   1rem top/bottom padding around a ~1.5rem tall title = comfortable
+   44-56px touch target on mobile, ~72px on desktop. */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 4px solid var(--plate-red);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar__plate {
+  color: var(--plate-red);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.navbar__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+}
+
+.navbar__title--accent { color: var(--plate-red); }
+
+.navbar__stats {
+  display: flex;
+  gap: 1.75rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.stat__num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--medal-gold);
+}
+
+.stat__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #C9C4B6;
+}
+
+/* ===================== BOARD LAYOUT ===================== */
+.board {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .board { grid-template-columns: 1fr; }
+}
+
+/* ===================== FORM CARD ===================== */
+.card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.75rem 1.5rem 1.5rem;
+  position: relative;
+}
+
+.card--form { position: sticky; top: 96px; }
+@media (max-width: 800px) { .card--form { position: static; } }
+
+.card__pin {
+  position: absolute;
+  top: -9px;
+  left: 24px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #E27A6E, var(--plate-red-dark));
+  box-shadow: 0 3px 4px rgba(0,0,0,0.25);
+}
+
+.card__heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  margin: 0.25rem 0 1.25rem;
+  color: var(--ink);
+}
+
+.field { display: block; margin-bottom: 0.9rem; }
+
+.field__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.field__label em { text-transform: none; font-style: italic; font-weight: 400; }
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  background: #FFFFFF;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--tape-blue);
+  outline-offset: 1px;
+  border-color: var(--tape-blue);
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.form__actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background: var(--plate-red);
+  color: var(--paper);
+  flex: 1;
+}
+.btn--primary:hover { background: var(--plate-red-dark); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1.5px solid var(--line);
+}
+.btn--ghost:hover { border-color: var(--ink-soft); }
+
+/* ===================== LOG LIST ===================== */
+.log__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.log__heading {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+#filterCategory {
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Each entry = an index card with a punch hole, like a real logbook page */
+.entry {
+  position: relative;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1rem 1.1rem 1rem 2.4rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.entry::before {
+  /* the punch hole */
+  content: "";
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--chalk-bg);
+  border: 1.5px solid var(--hole);
+}
+
+.entry__number {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--line);
+  min-width: 2.4rem;
+}
+
+.entry__body { min-width: 0; }
+
+.entry__title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.entry__exercise {
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.entry__category {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  background: rgba(46,90,136,0.1);
+  color: var(--tape-blue);
+  font-weight: 600;
+}
+
+.entry__meta {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.25rem;
+}
+
+.entry__meta b { color: var(--ink); }
+
+.entry__notes {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+
+.entry__date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.entry__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-end;
+}
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+}
+
+.icon-btn:hover { border-color: var(--tape-blue); color: var(--tape-blue); }
+.icon-btn--delete:hover { border-color: var(--plate-red); color: var(--plate-red); }
+
+.empty-state {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  padding: 2.5rem 1rem;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

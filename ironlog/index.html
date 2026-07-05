@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IronLog — Workout Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar">
+    <div class="navbar__brand">
+      <span class="navbar__plate">●</span>
+      <span class="navbar__title">IRON<span class="navbar__title--accent">LOG</span></span>
+    </div>
+    <div class="navbar__stats">
+      <div class="stat">
+        <span class="stat__num" id="statCount">0</span>
+        <span class="stat__label">entries</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" id="statVolume">0</span>
+        <span class="stat__label">kg lifted</span>
+      </div>
+      <div class="stat">
+        <span class="stat__num" id="statWeek">0</span>
+        <span class="stat__label">this week</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MAIN ============ -->
+  <main class="board">
+
+    <!-- ---- LEFT: ADD / EDIT CARD ---- -->
+    <section class="card card--form" aria-label="Add workout entry">
+      <div class="card__pin"></div>
+      <h2 class="card__heading" id="formHeading">New entry</h2>
+
+      <form id="workoutForm" novalidate>
+        <input type="hidden" id="workoutId">
+
+        <label class="field">
+          <span class="field__label">Exercise</span>
+          <input type="text" id="exercise" placeholder="e.g. Bench Press" required>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Category</span>
+          <select id="category" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Chest</option>
+            <option>Back</option>
+            <option>Legs</option>
+            <option>Shoulders</option>
+            <option>Arms</option>
+            <option>Core</option>
+            <option>Cardio</option>
+          </select>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Sets</span>
+            <input type="number" id="sets" min="1" max="50" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Reps</span>
+            <input type="number" id="reps" min="1" max="200" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Weight (kg)</span>
+            <input type="number" id="weight" min="0" max="500" step="0.5" required>
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Date</span>
+          <input type="date" id="date" required>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Notes <em>(optional)</em></span>
+          <textarea id="notes" rows="2" placeholder="How did it feel?"></textarea>
+        </label>
+
+        <div class="form__actions">
+          <button type="submit" class="btn btn--primary" id="submitBtn">Log it</button>
+          <button type="button" class="btn btn--ghost" id="cancelEditBtn" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ---- RIGHT: LOG LIST ---- -->
+    <section class="log" aria-label="Workout log">
+      <div class="log__toolbar">
+        <h2 class="log__heading">Log book</h2>
+        <select id="filterCategory">
+          <option value="all">All categories</option>
+          <option>Chest</option>
+          <option>Back</option>
+          <option>Legs</option>
+          <option>Shoulders</option>
+          <option>Arms</option>
+          <option>Core</option>
+          <option>Cardio</option>
+        </select>
+      </div>
+
+      <div id="entryList" class="entry-list">
+        <!-- entries injected by JS -->
+      </div>
+
+      <p class="empty-state" id="emptyState" hidden>
+        No entries yet. Log your first set on the left — this page is your book, not the app's.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> RT Dev — IronLog Workout Tracker</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
