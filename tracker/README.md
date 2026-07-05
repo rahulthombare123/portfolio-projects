@@ -112,11 +112,7 @@ Key: `trackflow_habits`
 
 ---
 
-## 📸 Screenshots
 
-> Open `index.html` in a browser — demo habits are seeded automatically on first load.
-
----
 
 ## 🛠 Browser Support
 
